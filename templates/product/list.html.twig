@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <h2>Liste des Produits : </h2> 
+        <div class="row">
+            {% for product in products %}
+            <div class="col-4">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <p>{{product.name}}</p>
+                        <p>{{product.description}}</p>
+                        <p>{{product.price}}€</p>
+                        <a class="btn btn-info" href="{{ path ('product_show', {'id': product.id}) }}">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %} 
+        </div> 
+    </div>
+ 
+{% endblock %}
