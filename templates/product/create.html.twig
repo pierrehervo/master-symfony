@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5">
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }} <!-- <form> -->
+            {{ form_widget(form) }}
+
+            <button class="btn btn-primary">Créer un produit</button>
+        {{ form_end(form) }} <!-- </form> -->
+    </div>
+{% endblock %}
