@@ -128,9 +128,11 @@ class ProductController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             //Execute la requete (UPDATE...)
             $entityManager->flush();
+            
+            $this->addFlash('success', 'le produit a été modifié.');
         }
 
-        $this->addFlash('success', 'le produit a été modifié.');
+        
 
         return $this->render('product/edit.html.twig', [
             'form' => $form->createView(),
