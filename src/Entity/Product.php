@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify; 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,11 +39,14 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Positive
      * @Assert\Regex("/^[a-z0-9\-]+$/")
      */
     private $slug;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="products")
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -57,6 +61,10 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+        //On va générer le slug en même temps que le name
+        $slugify = new Slugify();
+        $slug = $slugify->slugify($this->name);//Transforme 'Mon produit en mon-produit"
+        $this->setSlug($slug);
 
         return $this;
     }
@@ -90,9 +98,26 @@ class Product
         return $this->slug;
     }
 
-    public function setSlug(string $slug): self
+    //on autorise le slug à être nul
+    public function setSlug($slug): self
     {
+        //On evite d'écraser le slug existant pas la valeur null
+        if($slug === null){
+            return $this;
+        }
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -47,4 +47,41 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    //Requete avec le queryBuilder
+    public function findAllGreaterThanPrice($price): array
+    {
+        $qb = $this->createQueryBuilder('p'); //SELECT * FROM product p
+        $qb->andWhere('p.price > :price'); //WHERE p.price > :price
+        $qb->setParameter('price', $price);
+
+        $qb->orderBy('p.price', 'ASC'); // ORDER BY price ASC
+
+        return $qb->getQuery()->getResult();//Execute la requete  
+    }
+
+    public function findOneGreaterThanPrice($price): Product
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.price > :price') //WHERE p.price > :price
+            ->setParameter('price', $price)
+            ->orderBy('p.price', 'DESC')
+            ->setMaxResults(1)//LImite 1
+            ->getQuery();
+
+        return $qb->getOneOrNullResult();
+    }
+
+    /**
+     * Cette methode doit retourner les 4produits les plus chers de la BDD, appelée sur notre page d'accueil afin d'afficher les 4 produits.
+     */
+    public function findMoreExpensive(int $number = 4)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.price', 'DESC')
+            ->setMaxResults($number)// 4
+            ->getQuery();
+        return $qb->getResult();
+    }
+    
 }

@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2>Les produits les plus chers<h2>
+    
+    {% for product in products %}
+       {{ product.name }}
+    {% endfor %}
+
+{% endblock %}

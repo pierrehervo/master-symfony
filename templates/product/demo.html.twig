@@ -10,9 +10,13 @@
     {% endfor %}
     </ul>
 
-    <h2>Le produit numéro 2, son nom est : {{ product2.name }}</h2>
+    {% if product 1 %}
+    <h2>Le produit numéro 1, son nom est : {{ product1.name }}</h2>
+    {% endif %}
 
-    <h2>Le produit numéro 3, son nom est: {{ product3.name }}</h2>
+    {% if product 2 %}
+    <h2>Le produit numéro 2, son nom est: {{ product2.name }}</h2>
+    {% endif %}
 
     <h2>Produits qui valent 1500euros</h2>
     <ul>

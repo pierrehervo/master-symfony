@@ -11,6 +11,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     /**
+     * @Route("/", name="home")
+     */
+    public function home()
+    {
+        $products = $this->getDoctrine()->getRepository(Product::class)->findMoreExpensive();
+
+        return $this->render('product/home.html.twig', [
+            'products' =>$products,
+        ]);
+    }
+
+    /**
      * @Route("/product/create", name="product_create")
      */
     public function create(Request $request)
@@ -48,16 +60,21 @@ class ProductController extends AbstractController
         $product2 = $productRepository->find(2);
 
         //Récuperer le produit qui se nomme iphone X
-        $product3 = $productRepository->findOneByName('iPhone X');
+        $product3 = $productRepository->findOneByName('iPhone 12');
 
         //Récupérer tous les produits qui coutent 1500euros exactement
         $products1500 = $productRepository->findByPrice(1500); 
+
+        //Récupérer le produit le plus cher
+        $productExpensive =
+        $productRepository->findOneGreaterThanPrice(1400);
 
         return $this->render('product/demo.html.twig', [
             'products'=>$products,
             'product2'=>$product2,
             'product3'=>$product3,
             'products1500'=>$products1500,
+            'product_expensive'=> $productExpensive,
         ]);
     }
 
@@ -114,7 +131,7 @@ class ProductController extends AbstractController
         }
 
         $this->addFlash('success', 'le produit a été modifié.');
-        
+
         return $this->render('product/edit.html.twig', [
             'form' => $form->createView(),
         ]);
