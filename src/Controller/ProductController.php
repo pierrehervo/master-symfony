@@ -95,4 +95,44 @@ class ProductController extends AbstractController
             'products' =>$products,
         ]);
     }
+
+    /**
+     * @Route("/product/edit/{id}", name="product_edit")
+     *
+     */
+    public function edit (Request $request, Product $product)
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        //Quand le formulaire est valide
+        if ($form -> isSubmitted() && $form->isValid()) {
+            //On récupére Doctrine pour gérer la BDD
+            $entityManager = $this->getDoctrine()->getManager();
+            //Execute la requete (UPDATE...)
+            $entityManager->flush();
+        }
+
+        $this->addFlash('success', 'le produit a été modifié.');
+        
+        return $this->render('product/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/product/delete/{id}", name="product_delete")
+     */
+    public function delete(Product $product)
+    {
+        //On récupère Doctrine
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($product);
+        //On éxecute la requete (DELETE)
+        $entityManager->flush();
+
+        $this->addFlash('success', 'le produit a été supprimé.');
+        //Redirection
+        return $this>redirectToRoute('product_list');
+    }
 }

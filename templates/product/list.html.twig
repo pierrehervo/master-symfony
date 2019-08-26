@@ -13,6 +13,8 @@
                         <p>{{product.description}}</p>
                         <p>{{product.price}}€</p>
                         <a class="btn btn-info" href="{{ path ('product_show', {'id': product.id}) }}">Voir le produit</a>
+                        <a class="btn btn-warning" href="{{ path ('product_edit', {'id': product.id}) }}">Modifier le produit</a>
+                        <a class="btn btn-danger" href="{{ path ('product_delete', {'id': product.id}) }}">Supprimer le produit</a>
                     </div>
                 </div>
             </div>
