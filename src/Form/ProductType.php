@@ -21,7 +21,7 @@ class ProductType extends AbstractType
             ->add('category', null, [
                 'choice_label'=>'name'
             ])
-            ->add('tag', null, [
+            ->add('tags', null, [
                 'choice_label'=>'name',
                 'expanded'=>'true',
             ])

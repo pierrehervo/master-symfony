@@ -6,13 +6,30 @@ use App\Entity\Tag;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Entity\Customer;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private $passwordEncoder;
+    //On récupere le service pour encoder les mots de ppasse dans symfony
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+    }
+
     public function load(ObjectManager $manager)
     {
+        //Creer customer
+        $customer = new Customer();
+        $customer->setEmail('pierre.hervo@laposte.net');
+        //On genere le hash du mdp test
+        $encodedPassword = $this->passwordEncoder->encodePassword($customer, 'test');
+        $customer->setPassword($encodedPassword);
+        $manager->persist($customer);
+
         //Créer les utilisateurs
         $users = [];//Tableau qui va nous aider à stocker les instances des user 
         for ($i = 0; $i < 10; $i++){
