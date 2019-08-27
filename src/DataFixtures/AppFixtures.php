@@ -22,9 +22,11 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        //Creer customer
+        //Creer customerADMIN
         $customer = new Customer();
         $customer->setEmail('pierre.hervo@laposte.net');
+        $customer->setRoles(['ROLE_ADMIN']);
+        $customer->setFirstName('Pierrolrigolo');
         //On genere le hash du mdp test
         $encodedPassword = $this->passwordEncoder->encodePassword($customer, 'test');
         $customer->setPassword($encodedPassword);
